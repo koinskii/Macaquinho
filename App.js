@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Header, Image } from "react-native-elements";
 import SoundButton from "./components/SoundButton";
-import db from "./localdb";
+import db from "./db_1.json";
 
 
 export default class App extends React.Component {
@@ -40,12 +40,21 @@ export default class App extends React.Component {
           <TouchableOpacity
             style={styles.goButton}
             onPress={() => {
-              this.setState({ 
-                chunks: db[this.state.text].chunks ,
-                phones: db[this.state.text].phones
-              });
+              var newText = this.state.text.toLowerCase().trim()
+
+              //if e else
+              db[newText]
+              ?
+              
+
+              this.setState({
+                chunks: db[newText].chunks,
+                phones: db[newText].phones
+              })
+              :
+              Alert.alert("Palavra não encontrada :P")
             }}>
-            <Text style={styles.buttonText}>IR</Text>
+            <Text style={styles.buttonText}>Buscar</Text>
           </TouchableOpacity>
 
           <View>
@@ -53,7 +62,8 @@ export default class App extends React.Component {
               return (
                 <SoundButton
                   chunks={item}
-                  phones = {this.state.phones[index]}
+                  phones={this.state.phones[index]}
+                  buttonIndex={index}
                 />
               )
             })}
